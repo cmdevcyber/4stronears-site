@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4 STRONEARS | Robotics & Custom Projects</title>
+    <!-- Tailwind CSS for modern styles -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0B0F19',
+                            card: 'rgba(17, 24, 39, 0.7)',
+                            neonCyan: '#00F2FE',
+                            neonBlue: '#4FACFE',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Glassmorphism Cards & Neon Glows */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: #00F2FE;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+            transform: translateY(-4px) scale(1.01);
+        }
+        /* Custom Animated Circuit Background canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: #070a12;
+        }
+        /* Typing animation styling */
+        .typing-text::after {
+            content: '|';
+            animation: blink 0.8s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+</head>
+<body class="text-gray-100 font-sans overflow-x-hidden bg-brand-dark">
+
+    <!-- Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-50 glass-card bg-opacity-90 border-b border-gray-800 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <span class="text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-brand-neonCyan to-brand-neonBlue">
+                4 STRONEARS
+            </span>
+        </div>
+        <div class="hidden md:flex space-x-6 text-sm font-medium tracking-wide">
+            <a href="#home" class="hover:text-brand-neonCyan transition">Home</a>
+            <a href="#shop" class="hover:text-brand-neonCyan transition">Products</a>
+            <a href="#ready-projects" class="hover:text-brand-neonCyan transition">DIY Kits</a>
+            <a href="#builder" class="hover:text-brand-neonCyan transition">Custom Builder</a>
+            <a href="#about" class="hover:text-brand-neonCyan transition">About</a>
+            <a href="#shipping" class="hover:text-brand-neonCyan transition">Shipping</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button onclick="toggleCart()" class="relative p-2 text-xl hover:text-brand-neonCyan transition">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative">
+        <div class="max-w-4xl space-y-6 z-10">
+            <h1 class="text-5xl md:text-8xl font-black tracking-tight text-white">
+                Build. Create. <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-neonCyan to-brand-neonBlue typing-text">Innovate.</span>
+            </h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">
+                Everything you need for Robotics, Arduino, ESP32, Raspberry Pi, Sensors, and Custom Engineered Projects.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 pt-4">
+                <a href="#shop" class="px-8 py-4 bg-gradient-to-r from-brand-neonCyan to-brand-neonBlue text-slate-950 font-bold rounded-lg shadow-lg hover:opacity-90 transition transform hover:scale-105">
+                    <i class="fas fa-shopping-bag mr-2"></i>Shop Now
+                </a>
+                <a href="#builder" class="px-8 py-4 border border-brand-neonCyan text-brand-neonCyan font-bold rounded-lg hover:bg-brand-neonCyan hover:text-slate-950 transition transform hover:scale-105">
+                    <i class="fas fa-tools mr-2"></i>Build My Project
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="py-16 px-6 max-w-7xl mx-auto">
+        <h2 class="text-3xl font-bold mb-8 tracking-wide text-center">Popular Categories</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+            <div class="glass-card p-6 text-center rounded-xl cursor-pointer">
+                <div class="text-brand-neonCyan text-3xl mb-2"><i class="fas fa-microchip"></i></div>
+                <div class="font-bold text-sm">Arduino</div>
+            </div>
+            <div class="glass-card p-6 text-center rounded-xl cursor-pointer">
+                <div class="text-brand-neonBlue text-3xl mb-2"><i class="fas fa-wifi"></i></div>
+                <div class="font-bold text-sm">ESP32</div>
+            </div>
+            <div class="glass-card p-6 text-center rounded-xl cursor-pointer">
+                <div class="text-red-400 text-3xl mb-2"><i class="fab fa-raspberry-pi"></i></div>
+                <div class="font-bold text-sm">Raspberry Pi</div>
+            </div>
+            <div class="glass-card p-6 text-center rounded-xl cursor-pointer">
+                <div class="text-yellow-400 text-3xl mb-2"><i class="fas fa-fan"></i></div>
+                <div class="font-bold text-sm">Motors</div>
+            </div>
+            <div class="glass-card p-6 text-center rounded-xl cursor-pointer">
+                <div class="text-green-400 text-3xl mb-2"><i class="fas fa-tachometer-alt"></i></div>
+                <div class="font-bold text-sm">Sensors</div>
+            </div>
+            <div class="glass-card p-6 text-center rounded-xl cursor-pointer">
+                <div class="text-purple-400 text-3xl mb-2"><i class="fas fa-box-open"></i></div>
+                <div class="font-bold text-sm">Project Kits</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Shop Section -->
+    <section id="shop" class="py-16 px-6 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+            <h2 class="text-3xl font-bold tracking-wide">Component Marketplace</h2>
+            <!-- Real-time Filter/Search -->
+            <div class="flex gap-4">
+                <input type="text" id="search-bar" oninput="filterProducts()" placeholder="Live search components..." class="bg-slate-900 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-neonCyan w-64 text-sm">
+            </div>
+        </div>
+
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Product Card 1 -->
+            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="esp32 development board">
+                <div class="h-48 rounded-lg bg-slate-800 flex items-center justify-center text-5xl text-gray-600 mb-4 relative">
+                    <i class="fas fa-microchip text-brand-neonCyan"></i>
+                </div>
+                <h3 class="font-bold text-lg text-white">ESP32 Development Board</h3>
+                <div class="text-yellow-400 text-xs my-1"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="text-xl font-black mt-2 text-brand-neonCyan">₹450</p>
+                <button onclick="addToCart('ESP32 Development Board', 450)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition">
+                    Add to Cart
+                </button>
+            </div>
+            <!-- Product Card 2 -->
+            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="arduino uno r3">
+                <div class="h-48 rounded-lg bg-slate-800 flex items-center justify-center text-5xl text-gray-600 mb-4">
+                    <i class="fas fa-vial text-brand-neonBlue"></i>
+                </div>
+                <h3 class="font-bold text-lg text-white">Arduino Uno R3</h3>
+                <div class="text-yellow-400 text-xs my-1"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
+                <p class="text-xl font-black mt-2 text-brand-neonCyan">₹650</p>
+                <button onclick="addToCart('Arduino Uno R3', 650)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition">
+                    Add to Cart
+                </button>
+            </div>
+            <!-- Product Card 3 -->
+            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="towerpro servo motor mg996r">
+                <div class="h-48 rounded-lg bg-slate-800 flex items-center justify-center text-5xl text-gray-600 mb-4">
+                    <i class="fas fa-fan text-red-400"></i>
+                </div>
+                <h3 class="font-bold text-lg text-white">Servo Motor MG996R</h3>
+                <div class="text-yellow-400 text-xs my-1"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="text-xl font-black mt-2 text-brand-neonCyan">₹380</p>
+                <button onclick="addToCart('Servo Motor MG996R', 380)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition">
+                    Add to Cart
+                </button>
+            </div>
+            <!-- Product Card 4 -->
+            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="ultrasonic sensor hc-sr04">
+                <div class="h-48 rounded-lg bg-slate-800 flex items-center justify-center text-5xl text-gray-600 mb-4">
+                    <i class="fas fa-rss text-green-400"></i>
+                </div>
+                <h3 class="font-bold text-lg text-white">Ultrasonic Sensor HC-SR04</h3>
+                <div class="text-yellow-400 text-xs my-1"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></div>
+                <p class="text-xl font-black mt-2 text-brand-neonCyan">₹120</p>
+                <button onclick="addToCart('Ultrasonic Sensor HC-SR04', 120)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition">
+                    Add to Cart
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ready-made DIY Projects Catalogue -->
+    <section id="ready-projects" class="py-16 bg-slate-950 bg-opacity-40 px-6">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold mb-2 text-center">Ready-Made DIY Kits</h2>
+            <p class="text-gray-400 text-center mb-10">Pre-engineered systems equipped with full schematics & documentation.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-brand-neonCyan uppercase tracking-widest bg-cyan-950 bg-opacity-50 px-3 py-1 rounded-full border border-cyan-800">IoT / Automation</span>
+                        <h3 class="text-2xl font-bold text-white mt-4">Smart Irrigation System</h3>
+                        <p class="text-gray-400 text-sm mt-2">Automated soil moisture tracker built with ESP32 & cloud dashboard telemetry reporting module.</p>
+                        <div class="mt-4 text-xs text-brand-neonBlue"><i class="fas fa-layer-group mr-2"></i>Difficulty: Intermediate</div>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between pt-4 border-t border-gray-800">
+                        <span class="text-2xl font-black text-white">₹3,000</span>
+                        <button onclick="addToCart('Smart Irrigation System Kit', 3000)" class="px-5 py-2 bg-gradient-to-r from-brand-neonCyan to-brand-neonBlue text-slate-950 font-bold rounded-lg text-sm">Buy Kit</button>
+                    </div>
+                </div>
+                <!-- Project 2 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-brand-neonCyan uppercase tracking-widest bg-cyan-950 bg-opacity-50 px-3 py-1 rounded-full border border-cyan-800">Robotics</span>
+                        <h3 class="text-2xl font-bold text-white mt-4">Obstacle Avoider Vehicle</h3>
+                        <p class="text-gray-400 text-sm mt-2">Autonomous rover featuring localized ultrasound sweep processing matrix arrays.</p>
+                        <div class="mt-4 text-xs text-brand-neonBlue"><i class="fas fa-layer-group mr-2"></i>Difficulty: Beginner</div>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between pt-4 border-t border-gray-800">
+                        <span class="text-2xl font-black text-white">₹2,200</span>
+                        <button onclick="addToCart('Obstacle Avoider Vehicle Kit', 2200)" class="px-5 py-2 bg-gradient-to-r from-brand-neonCyan to-brand-neonBlue text-slate-950 font-bold rounded-lg text-sm">Buy Kit</button>
+                    </div>
+                </div>
+                <!-- Project 3 -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-brand-neonCyan uppercase tracking-widest bg-cyan-950 bg-opacity-50 px-3 py-1 rounded-full border border-cyan-800">Robotics / AI</span>
+                        <h3 class="text-2xl font-bold text-white mt-4">Fire Fighting Robot</h3>
+                        <p class="text-gray-400 text-sm mt-2">Flame detector configuration mapping with internal chemical delivery system pump.</p>
+                        <div class="mt-4 text-xs text-brand-neonBlue"><i class="fas fa-layer-group mr-2"></i>Difficulty: Advanced</div>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between pt-4 border-t border-gray-800">
+                        <span class="text-2xl font-black text-white">₹5,500</span>
+                        <button onclick="addToCart('Fire Fighting Robot Kit', 5500)" class="px-5 py-2 bg-gradient-to-r from-brand-neonCyan to-brand-neonBlue text-slate-950 font-bold rounded-lg text-sm">Buy Kit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Project Builder Wizard -->
+    <section id="builder" class="py-16 px-6 max-w-4xl mx-auto">
+        <div class="glass-card rounded-3xl p-8 border border-brand-neonBlue relative overflow-hidden">
+            <h2 class="text-3xl font-black tracking-tight mb-2">Custom Project Builder</h2>
+            <p class="text-gray-400 text-sm mb-8">Design your engineering assignment framework step-by-step.</p>
+
+            <form id="custom-builder-form">
+                <!-- Step 1 -->
+                <div class="mb-8">
+                    <label class="block text-brand-neonCyan font-bold text-sm uppercase tracking-wider mb-3">Step 1: Educational Scope</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <label class="cursor-pointer text-center p-3 border border-gray-700 rounded-xl block hover:border-brand-neonCyan">
+                            <input type="radio" name="edu_level" value="School" checked class="hidden peer">
+                            <span class="text-sm font-semibold text-gray-400 peer-checked:text-brand-neonCyan">School</span>
+                        </label>
+                        <label class="cursor-pointer text-center p-3 border border-gray-700 rounded-xl block hover:border-brand-neonCyan">
+                            <input type="radio" name="edu_level" value="College" class="hidden peer">
+                            <span class="text-sm font-semibold text-gray-400 peer-checked:text-brand-neonCyan">College</span>
+                        </label>
+                        <label class="cursor-pointer text-center p-3 border border-gray-700 rounded-xl block hover:border-brand-neonCyan">
+                            <input type="radio" name="edu_level" value="Engineering" class="hidden peer">
+                            <span class="text-sm font-semibold text-gray-400 peer-checked:text-brand-neonCyan">Engineering</span>
+                        </label>
+                        <label class="cursor-pointer text-center p-3 border border-gray-700 rounded-xl block hover:border-brand-neonCyan">
+                            <input type="radio" name="edu_level" value="Research" class="hidden peer">
+                            <span class="text-sm font-semibold text-gray-400 peer-checked:text-brand-neonCyan">Research</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="mb-8">
+                    <label class="block text-brand-neonCyan font-bold text-sm uppercase tracking-wider mb-3">Step 2: Core Engineering Track</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <label class="cursor-pointer text-center p-3 border border-gray-700 rounded-xl block hover:border-brand-neonCyan">
+                            <input type="radio" name="track_cat" value="IoT" checked class="hidden peer">
+                            <span class="text-sm font-semibold text-gray-400 peer-checked:text-brand-neonCyan">IoT</span>
+                        </label>
+                        <label class="cursor-pointer text-center p-3 border border-gray-700 rounded-xl block hover:border-brand-neonCyan">
+                            <input type="radio" name="track_cat" value="AI/ML" class="hidden peer">
+                            <span class="text-sm font-semibold text-gray-400 peer-checked:text-brand-neonCyan">AI / ML</span>
+                        </label>
+                        <label class="cursor-pointer text-center p-3 border border-gray-700 rounded-xl block hover:border-brand-neonCyan">
+                            <input type="radio" name="track_cat" value="Robotics" class="hidden peer">
+                            <span class="text-sm font-semibold text-gray-400 peer-checked:text-brand-neonCyan">Robotics</span>
+                        </label>
+                        <label class="cursor-pointer text-center p-3 border border-gray-700 rounded-xl block hover:border-brand-neonCyan">
+                            <input type="radio" name="track_cat" value="Agriculture" class="hidden peer">
+                            <span class="text-sm font-semibold text-gray-400 peer-checked:text-brand-neonCyan">Agriculture</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="mb-8">
+                    <label class="block text-brand-neonCyan font-bold text-sm uppercase tracking-wider mb-2">Step 3: Allocated Budget (INR)</label>
+                    <input type="range" id="budget-range" name="budget" min="500" max="50000" step="500" value="5000" oninput="document.getElementById('budget-val').innerText = this.value" class="w-full accent-brand-neonCyan bg-slate-800 rounded-lg appearance-none h-2">
+                    <div class="text-right text-sm text-brand-neonCyan font-bold mt-1">₹<span id="budget-val">5000</span></div>
+                </div>
+
+                <div class="text-center">
+                    <a href="#checkout-section" onclick="captureBuilderData()" class="inline-block px-10 py-4 bg-gradient-to-r from-brand-neonCyan to-brand-neonBlue text-slate-950 font-black rounded-xl tracking-wide uppercase shadow-lg transition transform hover:scale-105">
+                        Lock Structure & Go To Form
+                    </a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="about" class="py-16 px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div class="glass-card p-8 rounded-2xl">
+                <div class="text-4xl font-black text-brand-neonCyan">1500+</div>
+                <div class="text-gray-400 text-sm mt-1">Projects Delivered</div>
+            </div>
+            <div class="glass-card p-8 rounded-2xl">
+                <div class="text-4xl font-black text-brand-neonBlue">5000+</div>
+                <div class="text-gray-400 text-sm mt-1">Students Guided</div>
+            </div>
+            <div class="glass-card p-8 rounded-2xl">
+                <div class="text-4xl font-black text-emerald-400">98%</div>
+                <div class="text-gray-400 text-sm mt-1">Success Rate</div>
+            </div>
+            <div class="glass-card p-8 rounded-2xl">
+                <div class="text-4xl font-black text-purple-400">120+</div>
+                <div class="text-gray-400 text-sm mt-1">Cities Served</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shipping Route Visualization -->
+    <section id="shipping" class="py-16 bg-slate-950 bg-opacity-40 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-12">Quality Assurance & Logistics Protocol</h2>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-4 text-xs font-bold uppercase tracking-wider">
+                <div class="p-4 glass-card rounded-xl border-emerald-500/30"><i class="fas fa-file-invoice text-xl text-emerald-400 mb-2 block"></i>Ordered</div>
+                <div class="p-4 glass-card rounded-xl"><i class="fas fa-boxes text-xl text-brand-neonCyan mb-2 block"></i>Packed</div>
+                <div class="p-4 glass-card rounded-xl"><i class="fas fa-vial text-xl text-yellow-400 mb-2 block"></i>Testing</div>
+                <div class="p-4 glass-card rounded-xl"><i class="fas fa-shield-alt text-xl text-brand-neonBlue mb-2 block"></i>QC Passed</div>
+                <div class="p-4 glass-card rounded-xl"><i class="fas fa-truck-moving text-xl text-purple-400 mb-2 block"></i>Dispatched</div>
+                <div class="p-4 glass-card rounded-xl"><i class="fas fa-home text-xl text-pink-400 mb-2 block"></i>Delivered</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Processing & Checkout Sheet -->
+    <section id="checkout-section" class="py-16 px-6 max-w-4xl mx-auto">
+        <div class="glass-card rounded-3xl p-8 border-2 border-dashed border-gray-700">
+            <h2 class="text-3xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-brand-neonCyan">Order Submission (Zero-Payment Gateway)</h2>
+            <p class="text-gray-400 text-sm mb-8">No online card payment required. Submit your cart assets or custom project configuration via your dedicated WhatsApp application line directly below.</p>
+
+            <form id="order-form" onsubmit="dispatchWhatsAppOrder(event)" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs uppercase font-bold tracking-wider text-gray-400 mb-2">Customer Full Name *</label>
+                        <input type="text" id="cust-name" required class="w-full bg-slate-900 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-neonCyan text-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase font-bold tracking-wider text-gray-400 mb-2">WhatsApp Phone Number *</label>
+                        <input type="tel" id="cust-phone" required class="w-full bg-slate-900 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-neonCyan text-white text-sm" placeholder="Include country code">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase font-bold tracking-wider text-gray-400 mb-2">Email Address</label>
+                        <input type="email" id="cust-email" class="w-full bg-slate-900 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-neonCyan text-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase font-bold tracking-wider text-gray-400 mb-2">School / College Institute Name</label>
+                        <input type="text" id="cust-school" class="w-full bg-slate-900 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-neonCyan text-white text-sm">
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-800 my-6 pt-6">
+                    <h3 class="text-lg font-bold text-brand-neonCyan mb-4">Engineering Scope Deliverables</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+                        <label class="flex items-center space-x-2"><input type="checkbox" id="req-prog" class="accent-brand-neonCyan"> <span>Programming Code</span></label>
+                        <label class="flex items-center space-x-2"><input type="checkbox" id="req-report" class="accent-brand-neonCyan"> <span>Project Report / Abstract</span></label>
+                        <label class="flex items-center space-x-2"><input type="checkbox" id="req-circuit" class="accent-brand-neonCyan"> <span>Circuit Diagrams</span></label>
+                        <label class="flex items-center space-x-2"><input type="checkbox" id="req-pcb" class="accent-brand-neonCyan"> <span>Custom PCB Design</span></label>
+                        <label class="flex items-center space-x-2"><input type="checkbox" id="req-3d" class="accent-brand-neonCyan"> <span>3D Printed Chassis</span></label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase font-bold tracking-wider text-gray-400 mb-2">Project Descriptive Scope / Additional Component Notes</label>
+                    <textarea id="project-desc" rows="4" class="w-full bg-slate-900 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-neonCyan text-white text-sm" placeholder="Detail any unique features, custom code rules or specific lists..."></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-4 bg-gradient-to-r from-emerald-400 to-teal-500 text-slate-950 text-lg font-black uppercase tracking-widest rounded-xl shadow-xl hover:opacity-95 transition transform hover:scale-[1.01]">
+                    <i class="fab fa-whatsapp mr-2 text-xl"></i>Place Order & Connect to WhatsApp
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Sliding Sidebar Shopping Cart Panel -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full max-w-md bg-slate-950 border-l border-gray-800 z-50 transform translate-x-full transition-transform duration-300 p-6 flex flex-col justify-between shadow-2xl">
+        <div>
+            <div class="flex items-center justify-between pb-4 border-b border-gray-800">
+                <h3 class="text-xl font-bold tracking-wide"><i class="fas fa-shopping-basket mr-2 text-brand-neonCyan"></i>Your Component Bin</h3>
+                <button onclick="toggleCart()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <div id="cart-items-container" class="mt-6 space-y-4 overflow-y-auto max-h-[60vh]">
+                <!-- Populated programmatically -->
+            </div>
+        </div>
+        <div class="border-t border-gray-800 pt-4">
+            <div class="flex justify-between items-center text-lg font-bold mb-4">
+                <span>Subtotal:</span>
+                <span id="cart-total-display" class="text-brand-neonCyan">₹0</span>
+            </div>
+            <a href="#checkout-section" onclick="toggleCart()" class="block text-center w-full py-3 bg-gradient-to-r from-brand-neonCyan to-brand-neonBlue text-slate-950 font-bold rounded-lg uppercase tracking-wider text-sm shadow-md">
+                Proceed to Checkout Form
+            </a>
+        </div>
+    </div>
+
+    <!-- Application Script Logic Layer -->
+    <script>
+        // Interactive Circuit Canvas Architecture 
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.speedX = (Math.random() - 0.5) * 0.6;
+                this.speedY = (Math.random() - 0.5) * 0.6;
+                this.radius = Math.random() * 2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 242, 254, 0.25)';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 65; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateBg() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Grid background accent
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)';
+            ctx.lineWidth = 1;
+            for(let x=0; x<canvas.width; x+=40) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+            }
+            for(let y=0; y<canvas.height; y+=40) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+            }
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateBg);
+        }
+        animateBg();
+
+        // Reactive Application State Architecture
+        let cart = [];
+        let customBuilderPayload = null;
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            sidebar.classList.toggle('translate-x-full');
+        }
+
+        function addToCart(name, price) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ name, price, qty: 1 });
+            }
+            updateCartUI();
+            // Simple flash notifier
+            const countBadge = document.getElementById('cart-count');
+            countBadge.classList.add('scale-125', 'bg-cyan-400');
+            setTimeout(() => countBadge.classList.remove('scale-125', 'bg-cyan-400'), 250);
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const totalDisplay = document.getElementById('cart-total-display');
+            const countDisplay = document.getElementById('cart-count');
+            
+            container.innerHTML = '';
+            let total = 0;
+            let count = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price * item.qty;
+                count += item.qty;
+                container.innerHTML += `
+                    <div class="flex items-center justify-between bg-slate-900/80 p-3 rounded-xl border border-gray-800">
+                        <div>
+                            <h4 class="font-bold text-sm text-white">${item.name}</h4>
+                            <p class="text-xs text-brand-neonCyan mt-0.5">₹${item.price} &times; ${item.qty}</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-gray-500 hover:text-red-400 text-sm"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                `;
+            });
+
+            totalDisplay.innerText = `₹${total}`;
+            countDisplay.innerText = count;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function filterProducts() {
+            const query = document.getElementById('search-bar').value.toLowerCase();
+            const items = document.querySelectorAll('.product-item');
+            items.forEach(item => {
+                const name = item.getAttribute('data-name');
+                if (name.includes(query)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function captureBuilderData() {
+            const form = document.getElementById('custom-builder-form');
+            const formData = new FormData(form);
+            customBuilderPayload = {
+                eduLevel: formData.get('edu_level'),
+                category: formData.get('track_cat'),
+                budget: formData.get('budget')
+            };
+            
+            // Populate project notes box context automatically
+            const descArea = document.getElementById('project-desc');
+            descArea.value = `[Custom Builder Blueprint Initiated]\nTarget Level: ${customBuilderPayload.eduLevel}\nCategory Track: ${customBuilderPayload.category}\nTarget Allocation: ₹${customBuilderPayload.budget}\n\nAdditional Scope Requirements: `;
+        }
+
+        function dispatchWhatsAppOrder(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const email = document.getElementById('cust-email').value || 'N/A';
+            const school = document.getElementById('cust-school').value || 'N/A';
+            const desc = document.getElementById('project-desc').value || 'No extra notes provided.';
+
+            // Checkboxes
+            const code = document.getElementById('req-prog').checked ? 'Yes' : 'No';
+            const report = document.getElementById('req-report').checked ? 'Yes' : 'No';
+            const pcb = document.getElementById('req-pcb').checked ? 'Yes' : 'No';
+            const delivery = 'Yes'; // Default true via architecture configuration 
+
+            // Format Cart Products Array Block
+            let productsText = '';
+            if(cart.length > 0) {
+                cart.forEach((item, idx) => {
+                    productsText += `${idx + 1}. ${item.name} (x${item.qty})\n`;
+                });
+            } else {
+                productsText = 'No explicit individual component assets added. Using Custom Builder blueprint parameters.\n';
+            }
+
+            // Target Payload Construction matching strict specification layout
+            const message = `Hello 4 STRONEARS,
+
+I would like to place an order.
+
+Customer Name: ${name}
+Phone: ${phone}
+School: ${school}
+
+Products:
+${productsText}
+Description: ${desc}
+
+Need Code: ${code}
+Need Report: ${report}
+Need PCB: ${pcb}
+Need Delivery: ${delivery}`;
+
+            // URL Encode the string payload packet
+            const encodedMsg = encodeURIComponent(message);
+            
+            // Re-route processing target directly to business endpoint API line (Update '919999999999' with your phone number)
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=9500204804&text=${encodedMsg}`;
+            
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
