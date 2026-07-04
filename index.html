@@ -1,911 +1,352 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4 STRONEARS | Robotics & Components</title>
-    <!-- Tailwind CSS for modern styles -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            dark: '#0B0F19',
-                            card: 'rgba(17, 24, 39, 0.7)',
-                            neonCyan: '#00F2FE',
-                            neonBlue: '#4FACFE',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .glass-card {
-            background: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .glass-card:hover {
-            border-color: #00F2FE;
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
-            transform: translateY(-4px) scale(1.01);
-        }
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: #070a12;
-        }
-        .typing-text::after {
-            content: '|';
-            animation: blink 0.8s infinite;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sleek Hardware & Arduino Projects</title>
+  <style>
+    /* --- GLOBAL STYLES & PITCH BLACK THEME --- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      background-color: #050505; /* Deep luxury black */
+      color: #f5f5f5;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      padding-bottom: 5rem;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 5%;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #fff;
+    }
+
+    .cart-status {
+      font-size: 0.9rem;
+      background: #111;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      border: 1px solid #222;
+    }
+
+    #cart-count {
+      color: #00ffcc;
+      font-weight: bold;
+    }
+
+    .section-title {
+      text-align: center;
+      margin: 4rem 0 2rem 0;
+      font-size: 2rem;
+      letter-spacing: -0.5px;
+    }
+
+    .section-title span {
+      color: #00ffcc;
+    }
+
+    /* --- SLEEK UNIQUE TIERS (NO IMAGES) --- */
+    .packages-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .tier-card {
+      background: linear-gradient(145deg, #0f0f0f, #151515);
+      border: 1px solid #1c1c1c;
+      border-radius: 16px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .tier-card:hover {
+      transform: translateY(-8px);
+      border-color: #00ffcc;
+      box-shadow: 0 15px 30px rgba(0, 255, 204, 0.05);
+    }
+
+    .tier-card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #eee;
+    }
+
+    .tier-card .price {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 1rem 0;
+    }
+
+    .tier-card .description {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 2rem;
+      min-height: 50px;
+    }
+
+    /* --- COOL BUTTONS WITH MAGNETIC GLOW ANIMATION --- */
+    .btn-animated {
+      background: transparent;
+      color: #00ffcc;
+      border: 2px solid #00ffcc;
+      padding: 0.75rem 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 30px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      transition: color 0.4s ease, transform 0.2s ease;
+      width: 100%;
+    }
+
+    .btn-animated::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: #00ffcc;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      transition: width 0.5s ease, height 0.5s ease;
+    }
+
+    .btn-animated:hover {
+      color: #050505;
+      box-shadow: 0 0 25px rgba(0, 255, 204, 0.3);
+    }
+
+    .btn-animated:hover::before {
+      width: 350px;
+      height: 350px;
+    }
+
+    .btn-animated:active {
+      transform: scale(0.96);
+    }
+
+    /* --- PROJECTS IMAGE GALLERY --- */
+    .projects-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-photo-card {
+      background: #0f0f0f;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid #1c1c1c;
+      transition: border-color 0.3s ease;
+    }
+
+    .project-photo-card:hover {
+      border-color: #333;
+    }
+
+    .image-placeholder {
+      width: 100%;
+      height: 220px;
+      background: #161616;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #444;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Target standard images if you upload them later */
+    .project-photo-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .project-photo-card:hover img {
+      transform: scale(1.04);
+    }
+
+    .project-info {
+      padding: 1.5rem;
+    }
+
+    .tag {
+      background: #161616;
+      color: #00ffcc;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 0.75rem;
+      border: 1px solid #222;
+    }
+
+    .project-info h4 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .project-info p {
+      font-size: 0.9rem;
+      color: #888;
+    }
+  </style>
 </head>
-<body class="text-gray-100 font-sans overflow-x-hidden bg-brand-dark">
+<body>
 
-    <!-- Background Canvas -->
-    <canvas id="bg-canvas"></canvas>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">LAB // LAB</div>
+    <div class="cart-status">Cart: <span id="cart-count">0</span> items</div>
+  </header>
 
-    <!-- Navigation Bar -->
-    <nav class="sticky top-0 z-50 glass-card bg-opacity-90 border-b border-gray-800 px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center space-x-2">
-            <span class="text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-brand-neonCyan to-brand-neonBlue">
-                4 STRONEARS
-            </span>
-        </div>
-        <div class="hidden md:flex space-x-6 text-sm font-medium tracking-wide">
-            <a href="#home" class="hover:text-brand-neonCyan transition">Home</a>
-            <a href="#shop" class="hover:text-brand-neonCyan transition">Products</a>
-            <a href="#about" class="hover:text-brand-neonCyan transition">About</a>
-            <a href="#shipping" class="hover:text-brand-neonCyan transition">Shipping</a>
-        </div>
-        <div class="flex items-center space-x-4">
-            <button onclick="toggleCart()" class="relative p-2 text-xl hover:text-brand-neonCyan transition">
-                <i class="fas fa-shopping-cart"></i>
-                <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="min-h-[70vh] flex flex-col justify-center items-center text-center px-4 relative">
-        <div class="max-w-4xl space-y-6 z-10">
-            <h1 class="text-5xl md:text-8xl font-black tracking-tight text-white">
-                Build. Create. <br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-neonCyan to-brand-neonBlue typing-text">Innovate.</span>
-            </h1>
-            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">
-                Premium raw electronic assets, microcontrollers, components, and core modules at unbeatable baseline rates.
-            </p>
-            <div class="flex flex-wrap justify-center gap-4 pt-4">
-                <a href="#shop" class="px-8 py-4 bg-gradient-to-r from-brand-neonCyan to-brand-neonBlue text-slate-950 font-bold rounded-lg shadow-lg hover:opacity-90 transition transform hover:scale-105">
-                    <i class="fas fa-shopping-bag mr-2"></i>Explore 48 Core Items
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Categories Filtering Shortcut Bar -->
-    <section class="py-10 px-6 max-w-7xl mx-auto">
-        <h2 class="text-2xl font-bold mb-6 tracking-wide text-center text-gray-400">Quick Category Isolation</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-6 gap-4">
-            <div onclick="applyCategoryFilter('esp')" class="glass-card p-4 text-center rounded-xl cursor-pointer hover:border-brand-neonCyan">
-                <div class="text-brand-neonCyan text-2xl mb-1"><i class="fas fa-wifi"></i></div>
-                <div class="font-bold text-xs">ESP Modules</div>
-            </div>
-            <div onclick="applyCategoryFilter('sensor')" class="glass-card p-4 text-center rounded-xl cursor-pointer hover:border-brand-neonCyan">
-                <div class="text-green-400 text-2xl mb-1"><i class="fas fa-tachometer-alt"></i></div>
-                <div class="font-bold text-xs">Sensors</div>
-            </div>
-            <div onclick="applyCategoryFilter('motor')" class="glass-card p-4 text-center rounded-xl cursor-pointer hover:border-brand-neonCyan">
-                <div class="text-yellow-400 text-2xl mb-1"><i class="fas fa-fan"></i></div>
-                <div class="font-bold text-xs">Motors & Drivers</div>
-            </div>
-            <div onclick="applyCategoryFilter('display')" class="glass-card p-4 text-center rounded-xl cursor-pointer hover:border-brand-neonCyan">
-                <div class="text-purple-400 text-2xl mb-1"><i class="fas fa-desktop"></i></div>
-                <div class="font-bold text-xs">Displays</div>
-            </div>
-            <div onclick="applyCategoryFilter('wire')" class="glass-card p-4 text-center rounded-xl cursor-pointer hover:border-brand-neonCyan">
-                <div class="text-red-400 text-2xl mb-1"><i class="fas fa-ethernet"></i></div>
-                <div class="font-bold text-xs">Prototyping/Wires</div>
-            </div>
-            <div onclick="applyCategoryFilter('all')" class="glass-card p-4 text-center rounded-xl cursor-pointer hover:border-brand-neonCyan bg-gradient-to-br from-slate-900 to-slate-800">
-                <div class="text-white text-2xl mb-1"><i class="fas fa-border-all"></i></div>
-                <div class="font-bold text-xs text-brand-neonCyan">Show All 48</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Main Products Grid Section -->
-    <section id="shop" class="py-12 px-6 max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4 border-b border-gray-800 pb-6">
-            <div>
-                <h2 class="text-3xl font-black tracking-wide">Component Marketplace</h2>
-                <p class="text-sm text-gray-500 mt-1">Showing original market prices alongside your exclusive best deals.</p>
-            </div>
-            <!-- Real-time Interactive Filter -->
-            <div class="flex gap-4">
-                <input type="text" id="search-bar" oninput="filterProducts()" placeholder="Live parameter filtering..." class="bg-slate-900 border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-neonCyan w-72 text-sm text-white">
-            </div>
-        </div>
-
-        <!-- Injecting all requested items directly into DOM structure -->
-        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            <!-- Category: Controllers & Modules -->
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="esp32 development board" data-cat="esp">
-                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=400&q=80" alt="ESP32 Development Board" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">ESP32 Development Board</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹1,200</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹380</span>
-                </div>
-                <button onclick="addToCart('ESP32 Development Board', 380)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="esp32-cam module" data-cat="esp">
-                <img src="https://images.unsplash.com/photo-1553484771-047a44eee27f?auto=format&fit=crop&w=400&q=80" alt="ESP32-CAM Module" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">ESP32-CAM Module</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹1,500</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹350</span>
-                </div>
-                <button onclick="addToCart('ESP32-CAM Module', 350)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="esp32-cam mb programmer shield" data-cat="esp">
-                <img src="https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=400&q=80" alt="ESP32-CAM MB Programmer Shield" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">ESP32-CAM MB Shield</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹300</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹150</span>
-                </div>
-                <button onclick="addToCart('ESP32-CAM MB Programmer Shield', 150)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="arduino uno r3 module" data-cat="esp">
-                <img src="https://images.unsplash.com/photo-1608564697171-2dc2543ac238?auto=format&fit=crop&w=400&q=80" alt="Arduino UNO" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">Arduino UNO</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹700</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹250</span>
-                </div>
-                <button onclick="addToCart('Arduino UNO', 250)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <!-- Category: Audio & Acoustic Sensors -->
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="inmp441 i2s microphone module" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=400&q=80" alt="INMP441 I2S Microphone" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">INMP441 I2S Microphone</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹400</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹150</span>
-                </div>
-                <button onclick="addToCart('INMP441 I2S Microphone Module', 150)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="max9814 microphone module amplification" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1543968996-ee822b8176ba?auto=format&fit=crop&w=400&q=80" alt="MAX9814 Microphone Module" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">MAX9814 Microphone Module</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹350</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹150</span>
-                </div>
-                <button onclick="addToCart('MAX9814 Microphone Module', 150)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <!-- Category: Proximity, Environment, Authentication Sensors -->
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="hc-sr04 ultrasonic sensor range" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1551645121-d1034da75057?auto=format&fit=crop&w=400&q=80" alt="HC-SR04 Ultrasonic Sensor" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">HC-SR04 Ultrasonic Sensor</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹150</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹80</span>
-                </div>
-                <button onclick="addToCart('HC-SR04 Ultrasonic Sensor', 80)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="dht11 sensor temperature humidity" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1504164996022-09080787b6b3?auto=format&fit=crop&w=400&q=80" alt="DHT11 Sensor" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">DHT11 Sensor</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹300</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹90</span>
-                </div>
-                <button onclick="addToCart('DHT11 Sensor', 90)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="dht22 sensor digital precision" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=400&q=80" alt="DHT22 Sensor" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">DHT22 Sensor</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹500</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹350</span>
-                </div>
-                <button onclick="addToCart('DHT22 Sensor', 350)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="pir motion sensor hc-sr501" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?auto=format&fit=crop&w=400&q=80" alt="PIR Motion Sensor" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">PIR Motion Sensor HC-SR501</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹500</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹150</span>
-                </div>
-                <button onclick="addToCart('PIR Motion Sensor HC-SR501', 150)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="rc522 rfid module reader key" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=400&q=80" alt="RC522 RFID Module" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">RC522 RFID Module</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹600</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹180</span>
-                </div>
-                <button onclick="addToCart('RC522 RFID Module', 180)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="fingerprint sensor biometric reader" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1620288627223-53302f4e8c74?auto=format&fit=crop&w=400&q=80" alt="Fingerprint Sensor" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">Fingerprint Sensor</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹3,500</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹1,500</span>
-                </div>
-                <button onclick="addToCart('Fingerprint Sensor', 1500)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="ldr photoresistor light sensor" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1601524909162-be87252be2ff?auto=format&fit=crop&w=400&q=80" alt="LDR Photoresistor" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">LDR Photoresistor</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹100</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹20</span>
-                </div>
-                <button onclick="addToCart('LDR Photoresistor', 20)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <!-- Category: Actuators, Motors, Drivers -->
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="sg90 micro servo motor mini" data-cat="motor">
-                <img src="https://images.unsplash.com/photo-1546776310-eef45dd6d63c?auto=format&fit=crop&w=400&q=80" alt="SG90 Micro Servo" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">SG90 Micro Servo Motor</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹600</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹150</span>
-                </div>
-                <button onclick="addToCart('SG90 Micro Servo Motor', 150)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="5v dc motor miniature" data-cat="motor">
-                <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=400&q=80" alt="5V DC Motor" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">5V DC Motor</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹100</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹40</span>
-                </div>
-                <button onclick="addToCart('5V DC Motor', 40)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="l298n motor driver board dual h-bridge" data-cat="motor">
-                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=80" alt="L298N Motor Driver" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">L298N Motor Driver</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹700</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹250</span>
-                </div>
-                <button onclick="addToCart('L298N Motor Driver', 250)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="l293d motor driver shield extension" data-cat="motor">
-                <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&w=400&q=80" alt="L293D Motor Shield" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">L293D Motor Driver Shield</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹900</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹240</span>
-                </div>
-                <button onclick="addToCart('L293D Motor Driver Shield', 240)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="5v relay module electrical switch" data-cat="motor">
-                <img src="https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?auto=format&fit=crop&w=400&q=80" alt="5V Relay Module" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">5V Relay Module</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹400</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹140</span>
-                </div>
-                <button onclick="addToCart('5V Relay Module', 140)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <!-- Category: Visual Displays & Audio Indicators -->
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="0.96-inch i2c oled display panel screen" data-cat="display">
-                <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=400&q=80" alt="0.96 OLED Display" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">0.96-inch I2C OLED Display</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹900</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹250</span>
-                </div>
-                <button onclick="addToCart('0.96-inch I2C OLED Display', 250)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="16x2 lcd display alpha alphanumeric" data-cat="display">
-                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=400&q=80" alt="16x2 LCD Display" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">16x2 LCD Display</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹500</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹180</span>
-                </div>
-                <button onclick="addToCart('16x2 LCD Display', 180)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="piezo buzzer alert alarm speaker" data-cat="display">
-                <img src="https://images.unsplash.com/photo-1557324260-b891773c3a44?auto=format&fit=crop&w=400&q=80" alt="Piezo Buzzer" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">Piezo Buzzer</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹150</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹30</span>
-                </div>
-                <button onclick="addToCart('Piezo Buzzer', 30)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <!-- Category: Passive Components & Prototyping Essentials -->
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="led assortment pack multicolored" data-cat="wire">
-                <img src="https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=400&q=80" alt="LED Assortment Pack" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">LED Assortment Pack</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹300</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹80</span>
-                </div>
-                <button onclick="addToCart('LED Assortment Pack', 80)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="mb-102 breadboard matrix white solderless" data-cat="wire">
-                <img src="https://images.unsplash.com/photo-1601524909162-be87252be2ff?auto=format&fit=crop&w=400&q=80" alt="MB-102 Breadboard" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">MB-102 Breadboard</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹600</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹150</span>
-                </div>
-                <button onclick="addToCart('MB-102 Breadboard', 150)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="jumper wire set ribbon male female" data-cat="wire">
-                <img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&w=400&q=80" alt="Jumper Wire Set" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">Jumper Wire Set</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹400</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹120</span>
-                </div>
-                <button onclick="addToCart('Jumper Wire Set', 120)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="resistor variety pack mixed ohm values" data-cat="wire">
-                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=400&q=80" alt="Resistor Variety Pack" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">Resistor Variety Pack</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹500</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹150</span>
-                </div>
-                <button onclick="addToCart('Resistor Variety Pack', 150)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <!-- Category: Power, Cables, Core Environmental -->
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="9v battery with dc adapter barrel terminal" data-cat="wire">
-                <img src="https://images.unsplash.com/photo-1622445262465-2481c4574875?auto=format&fit=crop&w=400&q=80" alt="9V Battery Kit" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">9V Battery with DC Adapter</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹300</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹120</span>
-                </div>
-                <button onclick="addToCart('9V Battery with DC Adapter', 120)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="micro-usb cable standard connectivity code data sync" data-cat="wire">
-                <img src="https://images.unsplash.com/photo-1543269664-76bc3997d9ea?auto=format&fit=crop&w=400&q=80" alt="Micro-USB Cable" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">Micro-USB Cable</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹300</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹80</span>
-                </div>
-                <button onclick="addToCart('Micro-USB Cable', 80)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="capacitive soil moisture sensor v1.2 analog probe" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1463123081488-729f551ee6f0?auto=format&fit=crop&w=400&q=80" alt="Soil Moisture Sensor" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">Capacitive Soil Moisture Sensor v1.2</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹199</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹83</span>
-                </div>
-                <button onclick="addToCart('Capacitive Soil Moisture Sensor v1.2', 83)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <!-- Gas & Chemical Detection Systems -->
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="mq-2 gas sensor smoke butane detector" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1527142879-95b61a0b8226?auto=format&fit=crop&w=400&q=80" alt="MQ-2 Gas Sensor" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">MQ-2 Gas Sensor</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹250</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹90</span>
-                </div>
-                <button onclick="addToCart('MQ-2 Gas Sensor', 90)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="mq-135 air quality sensor hazardous tracking" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1504164996022-09080787b6b3?auto=format&fit=crop&w=400&q=80" alt="MQ-135 Sensor" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">MQ-135 Air Quality Sensor</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹299</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹109</span>
-                </div>
-                <button onclick="addToCart('MQ-135 Air Quality Sensor', 109)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <!-- Optical & Multi-Dimensional Tracking Arrays -->
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="flame sensor module photodiode detection" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1508873696983-2df5198e4009?auto=format&fit=crop&w=400&q=80" alt="Flame Sensor" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">Flame Sensor Module</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹149</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹35</span>
-                </div>
-                <button onclick="addToCart('Flame Sensor Module', 35)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="apds-9960 gesture sensor proximity rgb ambient" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=400&q=80" alt="APDS-9960 Gesture" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">APDS-9960 Gesture Sensor</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹799</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹299</span>
-                </div>
-                <button onclick="addToCart('APDS-9960 Gesture Sensor', 299)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="raindrop water level sensor resistive tracker" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=400&q=80" alt="Raindrop Level Sensor" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">Raindrop / Water Level Sensor</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹149</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹39</span>
-                </div>
-                <button onclick="addToCart('Raindrop / Water Level Sensor', 39)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="mpu6050 accelerometer gyroscope 6-axis module" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1504164996022-09080787b6b3?auto=format&fit=crop&w=400&q=80" alt="MPU6050 Acceleration" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">MPU6050 Accelerometer & Gyro</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹299</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹154</span>
-                </div>
-                <button onclick="addToCart('MPU6050 Accelerometer & Gyroscope', 154)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <!-- Health Monitoring & Chromatic Array Architectures -->
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="max30102 pulse oximeter sensor heart rate biometric" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1530026405186-ed1ea0ac7a63?auto=format&fit=crop&w=400&q=80" alt="MAX30102 Pulse Oximeter" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">MAX30102 Pulse Oximeter Sensor</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹499</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹124</span>
-                </div>
-                <button onclick="addToCart('MAX30102 Pulse Oximeter Sensor', 124)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="tcs34725 rgb color sensor continuous measurement light" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=400&q=80" alt="TCS34725 RGB Color" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">TCS34725 RGB Color Sensor</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹999</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹229</span>
-                </div>
-                <button onclick="addToCart('TCS34725 RGB Color Sensor', 229)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <!-- Global Positioning & Radio Transceivers -->
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="neo-6m gps module telemetry satellite data antenna" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1524522173746-f628baad3644?auto=format&fit=crop&w=400&q=80" alt="NEO-6M GPS Module" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">NEO-6M GPS Module</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹699</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹267</span>
-                </div>
-                <div class="text-xs text-slate-500 mt-1">Includes external patch antenna</div>
-                <button onclick="addToCart('NEO-6M GPS Module', 267)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="nrf24l01 wireless transciever module 2.4ghz antenna" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=400&q=80" alt="NRF24L01 Module" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">NRF24L01 Wireless Module</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹299</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹149</span>
-                </div>
-                <button onclick="addToCart('NRF24L01 Wireless Module', 149)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="hc-05 bluetooth serial module communication shield" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1562408590-e32931084e23?auto=format&fit=crop&w=400&q=80" alt="HC-05 Bluetooth Module" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">HC-05 Bluetooth Module</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹399</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹149</span>
-                </div>
-                <button onclick="addToCart('HC-05 Bluetooth Module', 149)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <!-- Radar Devices & Hydrological Actuators -->
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="rcwl-0516 radar motion sensor doppler microwave microwave" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=400&q=80" alt="RCWL-0516 Radar Sensor" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">RCWL-0516 Radar Motion Sensor</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹149</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹32</span>
-                </div>
-                <button onclick="addToCart('RCWL-0516 Radar Motion Sensor', 32)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="5v mini submersible water pump fluid mechanics extraction" data-cat="motor">
-                <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=400&q=80" alt="5V Mini Water Pump" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">5V Mini Submersible Water Pump</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹199</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹60</span>
-                </div>
-                <button onclick="addToCart('5V Mini Submersible Water Pump', 60)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="28byj-48 stepper motor uln2003 driver circuit" data-cat="motor">
-                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=80" alt="Stepper Motor Kit" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">28BYJ-48 Stepper Motor + Driver</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹299</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹125</span>
-                </div>
-                <button onclick="addToCart('28BYJ-48 Stepper Motor + ULN2003 Driver', 125)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <!-- Interactivity Buttons & Heavy Duty Hardware -->
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="ttp223 capacitive touch sensor board trigger" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=400&q=80" alt="TTP223 Touch Sensor" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">TTP223 Capacitive Touch Sensor</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹99</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹30</span>
-                </div>
-                <button onclick="addToCart('TTP223 Capacitive Touch Sensor', 30)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="mg996r metal gear servo heavy weight torque" data-cat="motor">
-                <img src="https://images.unsplash.com/photo-1546776310-eef45dd6d63c?auto=format&fit=crop&w=400&q=80" alt="MG996R Metal Servo" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">MG996R Metal Gear Servo</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹699</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹320</span>
-                </div>
-                <button onclick="addToCart('MG996R Metal Gear Servo', 320)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="solenoid door lock 12v 5v mechanism safe electronic" data-cat="motor">
-                <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?auto=format&fit=crop&w=400&q=80" alt="Solenoid Door Lock" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">Solenoid Door Lock (12V/5V)</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹699</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹300</span>
-                </div>
-                <button onclick="addToCart('Solenoid Door Lock (12V/5V)', 300)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <!-- Photonic Modules & Specialized Displays -->
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="laser diode module 650 nm red point ray emitter" data-cat="sensor">
-                <img src="https://images.unsplash.com/photo-1504164996022-09080787b6b3?auto=format&fit=crop&w=400&q=80" alt="Laser Diode" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">Laser Diode Module (650 nm)</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹149</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹40</span>
-                </div>
-                <button onclick="addToCart('Laser Diode Module (650 nm)', 40)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="i2c 16x2 lcd module communication array conversion character" data-cat="display">
-                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=400&q=80" alt="I2C LCD Module" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">I2C 16×2 LCD Module</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹349</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹180</span>
-                </div>
-                <button onclick="addToCart('I2C 16×2 LCD Module', 180)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-            <div class="glass-card rounded-xl overflow-hidden flex flex-col p-4 product-item" data-name="max7219 8x8 led dot matrix module controller panel cascade" data-cat="display">
-                <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=400&q=80" alt="8x8 LED Dot Matrix" class="h-44 w-full object-cover rounded-lg mb-4 bg-slate-900">
-                <h3 class="font-bold text-base text-white flex-grow">MAX7219 8×8 LED Dot Matrix</h3>
-                <div class="flex items-baseline space-x-2 mt-2">
-                    <span class="text-xs text-gray-500 line-through">₹399</span>
-                    <span class="text-lg font-black text-brand-neonCyan">₹170</span>
-                </div>
-                <button onclick="addToCart('MAX7219 8×8 LED Dot Matrix Module', 170)" class="mt-4 w-full bg-slate-800 border border-brand-neonCyan hover:bg-brand-neonCyan hover:text-slate-950 text-brand-neonCyan font-bold py-2 rounded-lg transition text-sm">Add to Bin</button>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Stats Panel Element -->
-    <section id="about" class="py-12 px-6 max-w-7xl mx-auto">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div class="glass-card p-6 rounded-2xl">
-                <div class="text-4xl font-black text-brand-neonCyan">48</div>
-                <div class="text-gray-400 text-xs mt-1">Modules Stocked</div>
-            </div>
-            <div class="glass-card p-6 rounded-2xl">
-                <div class="text-4xl font-black text-brand-neonBlue">₹20+</div>
-                <div class="text-gray-400 text-xs mt-1">Baseline Cost Threshold</div>
-            </div>
-            <div class="glass-card p-6 rounded-2xl">
-                <div class="text-4xl font-black text-emerald-400">100%</div>
-                <div class="text-gray-400 text-xs mt-1">Pre-tested Quality Checks</div>
-            </div>
-            <div class="glass-card p-6 rounded-2xl">
-                <div class="text-4xl font-black text-purple-400">Direct</div>
-                <div class="text-gray-400 text-xs mt-1">WhatsApp Pipeline</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Logistics Flow Visualization Section -->
-    <section id="shipping" class="py-12 bg-slate-950 bg-opacity-40 px-6">
-        <div class="max-w-5xl mx-auto text-center">
-            <h2 class="text-2xl font-bold mb-8">Integrated Diagnostics & Logistics Routing</h2>
-            <div class="grid grid-cols-2 md:grid-cols-6 gap-4 text-[10px] font-bold uppercase tracking-wider">
-                <div class="p-4 glass-card rounded-xl border-emerald-500/30"><i class="fas fa-file-invoice text-xl text-emerald-400 mb-2 block"></i>Ordered</div>
-                <div class="p-4 glass-card rounded-xl"><i class="fas fa-boxes text-xl text-brand-neonCyan mb-2 block"></i>Packed</div>
-                <div class="p-4 glass-card rounded-xl"><i class="fas fa-vial text-xl text-yellow-400 mb-2 block"></i>Lab Testing</div>
-                <div class="p-4 glass-card rounded-xl"><i class="fas fa-shield-alt text-xl text-brand-neonBlue mb-2 block"></i>QC Checked</div>
-                <div class="p-4 glass-card rounded-xl"><i class="fas fa-truck-moving text-xl text-purple-400 mb-2 block"></i>Dispatched</div>
-                <div class="p-4 glass-card rounded-xl"><i class="fas fa-home text-xl text-pink-400 mb-2 block"></i>Delivered</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Checkout Processing Form Panel -->
-    <section id="checkout-section" class="py-12 px-6 max-w-4xl mx-auto">
-        <div class="glass-card rounded-3xl p-8 border-2 border-dashed border-gray-700">
-            <h2 class="text-2xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-brand-neonCyan">Order Submission (Zero-Gateway Gateway)</h2>
-            <p class="text-gray-400 text-xs mb-6">Verify and forward your component basket directly to the central coordination center via standard WhatsApp application API.</p>
-
-            <form id="order-form" onsubmit="dispatchWhatsAppOrder(event)" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-[10px] uppercase font-bold tracking-wider text-gray-400 mb-2">Customer Full Name *</label>
-                        <input type="text" id="cust-name" required class="w-full bg-slate-900 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-neonCyan text-white text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] uppercase font-bold tracking-wider text-gray-400 mb-2">WhatsApp Contact Line *</label>
-                        <input type="tel" id="cust-phone" required class="w-full bg-slate-900 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-neonCyan text-white text-sm" placeholder="Country code required">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] uppercase font-bold tracking-wider text-gray-400 mb-2">Electronic Mail Address</label>
-                        <input type="email" id="cust-email" class="w-full bg-slate-900 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-neonCyan text-white text-sm">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] uppercase font-bold tracking-wider text-gray-400 mb-2">School / College Institute Reference</label>
-                        <input type="text" id="cust-school" class="w-full bg-slate-900 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-neonCyan text-white text-sm">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-[10px] uppercase font-bold tracking-wider text-gray-400 mb-2">Custom Package Notes or Pin configuration requests</label>
-                    <textarea id="project-desc" rows="4" class="w-full bg-slate-900 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-neonCyan text-white text-sm" placeholder="Type any specific inventory guidelines, micro-controllers pin adaptations here..."></textarea>
-                </div>
-
-                <button type="submit" class="w-full py-4 bg-gradient-to-r from-emerald-400 to-teal-500 text-slate-950 text-base font-black uppercase tracking-widest rounded-xl shadow-xl hover:opacity-95 transition">
-                    <i class="fab fa-whatsapp mr-2 text-lg"></i>Forward Order to Communication Desk
-                </button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Sidebar Shopping Cart panel -->
-    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full max-w-md bg-slate-950 border-l border-gray-800 z-50 transform translate-x-full transition-transform duration-300 p-6 flex flex-col justify-between shadow-2xl">
-        <div>
-            <div class="flex items-center justify-between pb-4 border-b border-gray-800">
-                <h3 class="text-lg font-bold tracking-wide"><i class="fas fa-shopping-basket mr-2 text-brand-neonCyan"></i>Component Bin</h3>
-                <button onclick="toggleCart()" class="text-gray-400 hover:text-white text-2xl">&times;</button>
-            </div>
-            <div id="cart-items-container" class="mt-4 space-y-3 overflow-y-auto max-h-[65vh]">
-                <!-- Populated via system scripts -->
-            </div>
-        </div>
-        <div class="border-t border-gray-800 pt-4">
-            <div class="flex justify-between items-center text-base font-bold mb-4">
-                <span>Subtotal Assets:</span>
-                <span id="cart-total-display" class="text-brand-neonCyan">₹0</span>
-            </div>
-            <a href="#checkout-section" onclick="toggleCart()" class="block text-center w-full py-3 bg-gradient-to-r from-brand-neonCyan to-brand-neonBlue text-slate-950 font-bold rounded-lg uppercase tracking-wider text-xs shadow-md">
-                Proceed with Selected Parts
-            </a>
-        </div>
+  <!-- SELECTION TIERS SECTION -->
+  <h2 class="section-title">Select Your <span>Package Tier</span></h2>
+  
+  <div class="packages-container">
+    <!-- Under 850 -->
+    <div class="tier-card">
+      <div>
+        <h3>Micro Tier</h3>
+        <p class="price">Under ₹850</p>
+        <p class="description">Entry-level hardware setups, simple logic flow, and basic sensor reading code.</p>
+      </div>
+      <button class="btn-animated" onclick="addToCart('Micro Tier', 850)">Add to Cart</button>
     </div>
 
-    <!-- Application Script Layer -->
-    <script>
-        // Circuit Grid Matrix Architecture Logic
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
+    <!-- 1k -->
+    <div class="tier-card">
+      <div>
+        <h3>Starter Tier</h3>
+        <p class="price">₹1,000</p>
+        <p class="description">Standard single-module code integrations with display units or custom motor driving.</p>
+      </div>
+      <button class="btn-animated" onclick="addToCart('Starter Tier', 1000)">Add to Cart</button>
+    </div>
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+    <!-- 2k -->
+    <div class="tier-card">
+      <div>
+        <h3>Pro Tier</h3>
+        <p class="price">₹2,000</p>
+        <p class="description">Multi-sensor ecosystems, intricate communication architecture, and custom debugging protocols.</p>
+      </div>
+      <button class="btn-animated" onclick="addToCart('Pro Tier', 2000)">Add to Cart</button>
+    </div>
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.speedX = (Math.random() - 0.5) * 0.4;
-                this.speedY = (Math.random() - 0.5) * 0.4;
-                this.radius = Math.random() * 1.5;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(0, 242, 254, 0.2)';
-                ctx.fill();
-            }
-        }
+    <!-- 5k -->
+    <div class="tier-card">
+      <div>
+        <h3>Advanced Tier</h3>
+        <p class="price">₹5,000</p>
+        <p class="description">IoT-heavy cloud dashboard deployments, full-stack micro-controller arrays, and automation panels.</p>
+      </div>
+      <button class="btn-animated" onclick="addToCart('Advanced Tier', 5000)">Add to Cart</button>
+    </div>
 
-        for (let i = 0; i < 50; i++) particles.push(new Particle());
+    <!-- 10k -->
+    <div class="tier-card">
+      <div>
+        <h3>Master Tier</h3>
+        <p class="price">₹10,000</p>
+        <p class="description">Industrial scale testing, multi-board array synchronization, full end-to-end builds.</p>
+      </div>
+      <button class="btn-animated" onclick="addToCart('Master Tier', 10000)">Add to Cart</button>
+    </div>
+  </div>
 
-        function animateBg() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.01)';
-            for(let x=0; x<canvas.width; x+=50) {
-                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
-            }
-            for(let y=0; y<canvas.height; y+=50) {
-                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
-            }
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animateBg);
-        }
-        animateBg();
+  <!-- ARDUINO GALLERY SECTION -->
+  <h2 class="section-title">Arduino <span>Projects Showcase</span></h2>
 
-        // Reactive Architecture Store
-        let cart = [];
+  <div class="projects-container">
+    <!-- Project 1 -->
+    <div class="project-photo-card">
+      <div class="image-placeholder">
+        <!-- Replace src text with an actual path later if you want: e.g., src="arduino.jpg" -->
+        <img src="https://images.unsplash.com/photo-1608564697171-2f230e57ac81?q=80&w=600&auto=format&fit=crop" alt="Arduino Uno">
+      </div>
+      <div class="project-info">
+        <span class="tag">Arduino Uno</span>
+        <h4>Automated Smart Irrigation</h4>
+        <p>Monitors soil metrics via capacity sensors and drives real-time solenoid water gates using low-noise relay grids.</p>
+      </div>
+    </div>
 
-        function toggleCart() {
-            document.getElementById('cart-sidebar').classList.toggle('translate-x-full');
-        }
+    <!-- Project 2 -->
+    <div class="project-photo-card">
+      <div class="image-placeholder">
+        <img src="https://images.unsplash.com/photo-1517055729445-fa7d27394b48?q=80&w=600&auto=format&fit=crop" alt="Arduino Robotics">
+      </div>
+      <div class="project-info">
+        <span class="tag">Arduino Uno + Custom Shield</span>
+        <h4>Omnidirectional Maze Solver</h4>
+        <p>A fast processing chassis relying on specialized ultrasonic ping sensor matrix configurations for complex escape routing.</p>
+      </div>
+    </div>
+  </div>
 
-        // Live parameter search filter matching function
-        function filterProducts() {
-            const query = document.getElementById('search-bar').value.toLowerCase();
-            const items = document.querySelectorAll('.product-item');
-            items.forEach(item => {
-                const name = item.getAttribute('data-name');
-                if(name.includes(query)) item.style.display = 'flex';
-                else item.style.display = 'none';
-            });
-        }
+  <!-- INLINE CART LOGIC -->
+  <script>
+    // LocalStorage array ensures items stay in cart if the page reloads
+    let cart = JSON.parse(localStorage.getItem('webCart')) || [];
 
-        // Shortcut Structural Filter Array
-        function applyCategoryFilter(catClass) {
-            const items = document.querySelectorAll('.product-item');
-            items.forEach(item => {
-                if(catClass === 'all' || item.getAttribute('data-cat') === catClass) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-            document.getElementById('shop').scrollIntoView();
-        }
+    function addToCart(name, price) {
+      const selectedItem = {
+        id: 'ITEM-' + price + '-' + Date.now(),
+        packageName: name,
+        cost: price
+      };
+      
+      cart.push(selectedItem);
+      localStorage.setItem('webCart', JSON.stringify(cart));
+      updateUI();
+    }
 
-        function addToCart(name, price) {
-            const existing = cart.find(i => i.name === name);
-            if(existing) existing.qty += 1;
-            else cart.push({ name, price, qty: 1 });
-            
-            updateCartUI();
-            const countEl = document.getElementById('cart-count');
-            countEl.classList.add('bg-emerald-500', 'scale-110');
-            setTimeout(() => countEl.classList.remove('bg-emerald-500', 'scale-110'), 250);
-        }
+    function updateUI() {
+      const counter = document.getElementById('cart-count');
+      if (counter) {
+        counter.textContent = cart.length;
+      }
+    }
 
-        function removeItem(index) {
-            cart.splice(index, 1);
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            const container = document.getElementById('cart-items-container');
-            const totalDisplay = document.getElementById('cart-total-display');
-            const countDisplay = document.getElementById('cart-count');
-            
-            container.innerHTML = '';
-            let total = 0;
-            let totalCount = 0;
-
-            cart.forEach((item, index) => {
-                total += item.price * item.qty;
-                totalCount += item.qty;
-                container.innerHTML += `
-                    <div class="flex items-center justify-between p-3 bg-slate-900 border border-gray-800 rounded-xl">
-                        <div>
-                            <h4 class="font-bold text-xs text-white">${item.name}</h4>
-                            <p class="text-[11px] text-brand-neonCyan mt-0.5">₹${item.price} &times; ${item.qty}</p>
-                        </div>
-                        <button onclick="removeItem(${index})" class="text-gray-500 hover:text-red-400 transition text-sm">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>
-                `;
-            });
-
-            if(!cart.length) {
-                container.innerHTML = `<p class="text-gray-500 text-xs text-center py-6">Your component basket is clear.</p>`;
-            }
-
-            countDisplay.innerText = totalCount;
-            totalDisplay.innerText = `₹${total.toLocaleString('en-IN')}`;
-        }
-
-        function dispatchWhatsAppOrder(e) {
-            e.preventDefault();
-            const name = document.getElementById('cust-name').value;
-            const phone = document.getElementById('cust-phone').value;
-            const email = document.getElementById('cust-email').value || 'N/A';
-            const school = document.getElementById('cust-school').value || 'N/A';
-            const extraNotes = document.getElementById('project-desc').value || 'None provided.';
-
-            if(!cart.length) {
-                alert('Your basket is completely empty. Please append modules first.');
-                return;
-            }
-
-            let textString = `Hello 4 STRONEARS,\n\nI am compiling a direct system layout components request:\n\n`;
-            textString += `Customer Profile: ${name}\n`;
-            textString += `Contact Phone: ${phone}\n`;
-            textString += `Email Identity: ${email}\n`;
-            textString += `Affiliated Lab/School: ${school}\n\n`;
-            textString += `Requested Architecture Assets:\n`;
-
-            let cumulativeVal = 0;
-            cart.forEach((item, i) => {
-                textString += `${i+1}. ${item.name} [x${item.qty}] -> ₹${item.price * item.qty}\n`;
-                cumulativeVal += item.price * item.qty;
-            });
-
-            textString += `\nFinal Aggregated Value: ₹${cumulativeVal.toLocaleString('en-IN')}\n`;
-            textString += `Additional Custom Specifications: ${extraNotes}\n\n`;
-            textString += `Routing Status: Ready for verification.`;
-
-            const cleanEncodedTarget = encodeURIComponent(textString);
-            // Re-route dynamically with your standard targeted active country infrastructure payload number
-            const targetAPIUrl = `https://api.whatsapp.com/send?phone=9500204804&text=${cleanEncodedTarget}`;
-            window.open(targetAPIUrl, '_blank');
-        }
-    </script>
+    // Refresh display on initial launch
+    document.addEventListener('DOMContentLoaded', updateUI);
+  </script>
 </body>
 </html>
